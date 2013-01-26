@@ -39,6 +39,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="library" name="dropbox-android-sdk-1.5.3" level="project" />
+    <orderEntry type="library" name="json_simple-1.1" level="project" />
   </component>
 </module>
 
