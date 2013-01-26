@@ -2,25 +2,31 @@ package com.recordat.Recordat;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.*;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class Recordat extends Activity {
     final static private String LOG_TAG = "RECORDAT_MAIN";
@@ -33,17 +39,29 @@ public class Recordat extends Activity {
     final static private String DROPBOX_KEY_KEY = "com.recordat.Recordat.tokenkey";
     final static private String DROPBOX_SECRET_KEY = "com.recordat.Recordat.secretkey";
 
-    private static String fileName = null;
+    private static String appDirectoryPath;
 
     private SharedPreferences sharedPreferences;
 
     private DropboxAPI<AndroidAuthSession> dBApi;
 
-    private RecordButton recordButton = null;
+    private boolean startRecording = true;
+
+    private Button recordButton = null;
     private MediaRecorder recorder = null;
 
-    private PlayButton playButton = null;
+    private Button playButton = null;
     private MediaPlayer player = null;
+
+    private String newFileName;
+    private String fileName;
+    private long startTime;
+    private ListView addedBkmkListView;
+
+    private ArrayAdapter adapter;
+    private Button addBookmarkButton;
+    private Button renameAudioButton;
+    private ArrayList<Bookmark> currentBookmarks;
 
     /**
      * Called when the activity is first created.
@@ -52,28 +70,99 @@ public class Recordat extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
         sharedPreferences = this.getSharedPreferences(
                 "com.recordat.Recordat", Context.MODE_PRIVATE);
         initDropboxApi();
         initPlayerInterface();
-        fileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecordtest.3gp";
+        appDirectoryPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recordat/";
+        new File(appDirectoryPath).mkdirs();
     }
 
     private void initPlayerInterface() {
-        LinearLayout linearLayout = new LinearLayout(this);
-        recordButton = new RecordButton(this);
-        linearLayout.addView(recordButton,
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        0));
-        playButton = new PlayButton(this);
-        linearLayout.addView(playButton,
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        0));
-        setContentView(linearLayout);
+        final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.stuff);
+        recordButton = (Button)findViewById(R.id.recordbutton);
+        recordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRecord(startRecording);
+                if (startRecording) {
+                    recordButton.setText("Stop recording");
+                } else {
+                    recordButton.setText("Start recording");
+                }
+                startRecording = !startRecording;
+            }
+        });
+        playButton = (Button)findViewById(R.id.playbutton);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            private boolean startPlaying = true;
+            public void onClick(View v) {
+                onPlay(startPlaying);
+                if (startPlaying) {
+                    playButton.setText("Stop playing");
+                } else {
+                    playButton.setText("Start playing");
+                }
+                startPlaying = !startPlaying;
+            }
+        });
+        addBookmarkButton = (Button)findViewById(R.id.addbookmark);
+        addBookmarkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Recordat.this, "poopoopoo", Toast.LENGTH_LONG).show();
+                adapter.add(new Bookmark(new Date().getTime() - startTime));
+            }
+        });
+        addedBkmkListView = (ListView)findViewById(R.id.addedbookmarklist);
+        addedBkmkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                final Bookmark bookmark = (Bookmark) adapter.getItem(i);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Recordat.this);
+                alertDialogBuilder.setTitle("Rename bookmark");
+                alertDialogBuilder.setMessage("New name");
+                final EditText input = new EditText(Recordat.this);
+                alertDialogBuilder.setView(input);
+                alertDialogBuilder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        adapter.remove(adapter.getItem(i));
+                        bookmark.setText(String.valueOf(input.getText()));
+                        adapter.insert(bookmark, i);
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+                alertDialogBuilder.show();
+            }
+        });
+        renameAudioButton = (Button)findViewById(R.id.renameaudio);
+        renameAudioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Recordat.this);
+                alertDialogBuilder.setTitle("Rename audio recording");
+                alertDialogBuilder.setMessage("Recording name");
+                final EditText input = new EditText(Recordat.this);
+                alertDialogBuilder.setView(input);
+                alertDialogBuilder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        newFileName = String.valueOf(input.getText());
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+                alertDialogBuilder.show();
+            }
+        });
     }
 
     private void initDropboxApi() {
@@ -92,8 +181,6 @@ public class Recordat extends Activity {
     protected void onResume() {
         super.onResume();
 
-        // ...
-
         if (dBApi.getSession().authenticationSuccessful()) {
             try {
                 // MANDATORY call to complete auth.
@@ -109,15 +196,45 @@ public class Recordat extends Activity {
                 Log.i("DbAuthLog", "Error authenticating", e);
             }
         }
-
-        // ...
     }
 
     private void onRecord(boolean start) {
         if (start) {
             startRecording();
+            currentBookmarks = new ArrayList<Bookmark>();
+            adapter = new ArrayAdapter(
+                    this, android.R.layout.simple_list_item_1, currentBookmarks);
+            addedBkmkListView.setAdapter(adapter);
+            // TODO need place to rename file
         } else {
             stopRecording();
+        }
+    }
+
+    private class AddToDropboxTask extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            String fileName = strings[0];
+            FileInputStream inputStream = null;
+            try {
+                File file = new File(appDirectoryPath+fileName);
+                inputStream = new FileInputStream(file);
+                DropboxAPI.Entry newEntry = dBApi.putFile(
+                        fileName, inputStream, file.length(), null, null);
+                Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
+            } catch (FileNotFoundException e) {
+                Log.e("DbExampleLog", "File not found.");
+            } catch (DropboxException e) {
+                Log.e("DbExampleLog", "Something went wrong while uploading.");
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {}
+                }
+            }
+            return null;
         }
     }
 
@@ -130,9 +247,11 @@ public class Recordat extends Activity {
     }
 
     private void startPlaying() {
+        String file = newFileName;
+        // TODO pick files out of this shit
         player = new MediaPlayer();
         try {
-            player.setDataSource(fileName);
+            player.setDataSource(file);
             player.prepare();
             player.start();
         } catch (IOException e) {
@@ -146,15 +265,20 @@ public class Recordat extends Activity {
     }
 
     private void startRecording() {
+        fileName = new Date().getTime() + "";
+        newFileName = null;
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setOutputFile(fileName);
+        recorder.setOutputFile(appDirectoryPath + fileName + ".mp4");
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
         try {
             recorder.prepare();
             recorder.start();
+            startTime = new Date().getTime();
+            findViewById(R.id.recordingoptions).setVisibility(View.VISIBLE);
+            findViewById(R.id.addedbookmarklist).setVisibility(View.VISIBLE);
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
             Toast.makeText(this, "fuck, we are not prepared", Toast.LENGTH_LONG).show();
@@ -162,9 +286,45 @@ public class Recordat extends Activity {
     }
 
     private void stopRecording() {
+        recordButton.setText("Start recording");
+//        startRecording = true;
         recorder.stop();
         recorder.release();
         recorder = null;
+        findViewById(R.id.recordingoptions).setVisibility(View.GONE);
+        findViewById(R.id.addedbookmarklist).setVisibility(View.GONE);
+        if (newFileName != null) {
+            File from = new File(appDirectoryPath+fileName+".mp4");
+            File to = new File(appDirectoryPath+newFileName+".mp4");
+            from.renameTo(to);
+        } else {
+            newFileName = fileName;
+        }
+
+        String newFileInfoName = newFileName + "_bmks";
+        ArrayList<JSONObject> jsonBookmarks = new ArrayList<JSONObject>();
+        for (final Bookmark bookmark : currentBookmarks) {
+            jsonBookmarks.add(new JSONObject(new HashMap() {{
+                put("time", bookmark.getTime());
+                put("name", bookmark.getText());
+            }}));
+        }
+        JSONArray jsonBookmarksArray = new JSONArray(jsonBookmarks);
+        try {
+            FileWriter file = new FileWriter(appDirectoryPath+newFileInfoName+".txt");
+            Toast.makeText(this, jsonBookmarksArray.toString(), Toast.LENGTH_LONG).show();
+            file.write(jsonBookmarksArray.toString());
+            file.flush();
+            file.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        currentBookmarks = null;
+
+        new AddToDropboxTask().execute(newFileName.concat(".mp4"));
+        new AddToDropboxTask().execute(newFileInfoName.concat(".txt"));
     }
 
     private void storeKeys(String key, String secret) {
@@ -185,57 +345,12 @@ public class Recordat extends Activity {
     public void onPause() {
         super.onPause();
         if (recorder != null) {
-            recorder.release();
-            recorder = null;
+            stopRecording();
         }
 
         if (player != null) {
             player.release();
             player = null;
-        }
-    }
-
-    class RecordButton extends Button {
-        boolean startRecording = true;
-
-        OnClickListener clicker = new OnClickListener() {
-            public void onClick(View v) {
-                onRecord(startRecording);
-                if (startRecording) {
-                    setText("Stop recording");
-                } else {
-                    setText("Start recording");
-                }
-                startRecording = !startRecording;
-            }
-        };
-
-        public RecordButton(Context ctx) {
-            super(ctx);
-            setText("Start recording");
-            setOnClickListener(clicker);
-        }
-    }
-
-    class PlayButton extends Button {
-        boolean startPlaying = true;
-
-        OnClickListener clicker = new OnClickListener() {
-            public void onClick(View v) {
-                onPlay(startPlaying);
-                if (startPlaying) {
-                    setText("Stop playing");
-                } else {
-                    setText("Start playing");
-                }
-                startPlaying = !startPlaying;
-            }
-        };
-
-        public PlayButton(Context ctx) {
-            super(ctx);
-            setText("Start playing");
-            setOnClickListener(clicker);
         }
     }
 }
