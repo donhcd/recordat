@@ -20,10 +20,11 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,6 +63,8 @@ public class Recordat extends Activity {
     private Button addBookmarkButton;
     private Button renameAudioButton;
     private ArrayList<Bookmark> currentBookmarks;
+    private ListView playBkmkListView;
+    private ArrayList<Bookmark> playingFileBookmarks;
 
     /**
      * Called when the activity is first created.
@@ -98,9 +101,8 @@ public class Recordat extends Activity {
         playButton.setOnClickListener(new View.OnClickListener() {
             private boolean startPlaying = true;
             public void onClick(View v) {
-                onPlay(startPlaying);
                 if (startPlaying) {
-                    playButton.setText("Stop playing");
+                    onPlay(startPlaying);
                 } else {
                     playButton.setText("Start playing");
                 }
@@ -141,6 +143,34 @@ public class Recordat extends Activity {
                 alertDialogBuilder.show();
             }
         });
+
+        playBkmkListView = (ListView)findViewById(R.id.playbookmarklist);
+        playBkmkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                final Bookmark bookmark = (Bookmark) adapter.getItem(i);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Recordat.this);
+                alertDialogBuilder.setTitle("Rename bookmark");
+                alertDialogBuilder.setMessage("New name");
+                final EditText input = new EditText(Recordat.this);
+                alertDialogBuilder.setView(input);
+                alertDialogBuilder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        adapter.remove(adapter.getItem(i));
+                        bookmark.setText(String.valueOf(input.getText()));
+                        adapter.insert(bookmark, i);
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+                alertDialogBuilder.show();
+            }
+        });
+
         renameAudioButton = (Button)findViewById(R.id.renameaudio);
         renameAudioButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,20 +268,47 @@ public class Recordat extends Activity {
         }
     }
 
-    private void onPlay(boolean start) {
+    private void onPlay(final boolean start) {
         if (start) {
-            startPlaying();
+            AlertDialog.Builder builder = new AlertDialog.Builder(Recordat.this);
+            FilenameFilter filter = new FilenameFilter() {
+                public boolean accept(File dir, String filename) {
+                    File sel = new File(dir, filename);
+                    return filename.contains(".mp4") || sel.isDirectory();
+                }
+            };
+            final String[] recordingList = new File(appDirectoryPath).list(filter);
+            final String[] theFile = {""};
+            builder.setTitle("Choose recording");
+            builder.setItems(recordingList, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (start) {
+                        theFile[0] = recordingList[which];
+                        startPlaying(appDirectoryPath + theFile[0]);
+                        playButton.setText("Stop playing");
+                    } else {
+                        findViewById(R.id.playbookmarklist).setVisibility(View.GONE);
+                        playButton.setText("Start playing");
+                    }
+                }
+            });
+            builder.show();
         } else {
             stopPlaying();
         }
     }
 
-    private void startPlaying() {
-        String file = newFileName;
-        // TODO pick files out of this shit
+    private void startPlaying(String fileName) {
+        String bkmksFile = fileName;
+        bkmksFile = bkmksFile.substring(0, bkmksFile.length()-4)+"_bmks.txt";
+        playingFileBookmarks = getBookmarksFromFile(bkmksFile);
+        ArrayAdapter playAdapter = new ArrayAdapter(
+                this, android.R.layout.simple_list_item_1, playingFileBookmarks);
+        playBkmkListView.setAdapter(playAdapter);
+        playBkmkListView.setVisibility(View.VISIBLE);
         player = new MediaPlayer();
         try {
-            player.setDataSource(file);
+            player.setDataSource(fileName);
             player.prepare();
             player.start();
         } catch (IOException e) {
@@ -302,29 +359,52 @@ public class Recordat extends Activity {
         }
 
         String newFileInfoName = newFileName + "_bmks";
-        ArrayList<JSONObject> jsonBookmarks = new ArrayList<JSONObject>();
-        for (final Bookmark bookmark : currentBookmarks) {
-            jsonBookmarks.add(new JSONObject(new HashMap() {{
-                put("time", bookmark.getTime());
-                put("name", bookmark.getText());
-            }}));
-        }
-        JSONArray jsonBookmarksArray = new JSONArray(jsonBookmarks);
         try {
             FileWriter file = new FileWriter(appDirectoryPath+newFileInfoName+".txt");
-            Toast.makeText(this, jsonBookmarksArray.toString(), Toast.LENGTH_LONG).show();
-            file.write(jsonBookmarksArray.toString());
+            Toast.makeText(this, new Gson().toJson(currentBookmarks), Toast.LENGTH_LONG).show();
+            file.write(new Gson().toJson(currentBookmarks));
             file.flush();
             file.close();
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
         currentBookmarks = null;
 
         new AddToDropboxTask().execute(newFileName.concat(".mp4"));
         new AddToDropboxTask().execute(newFileInfoName.concat(".txt"));
+    }
+
+    private String getBookmarksJSON(ArrayList<Bookmark> currentBookmarks) {
+        return new Gson().toJson(currentBookmarks);
+    }
+
+    private ArrayList<Bookmark> getBookmarksFromFile(String filePath) {
+        BufferedReader br = null;
+        String file = "";
+
+        try {
+            String sCurrentLine;
+            Log.e(LOG_TAG, "in getBookmarksFromFile, reading "+filePath);
+            br = new BufferedReader(new FileReader(filePath));
+            Log.e(LOG_TAG, "made br");
+            while ((sCurrentLine = br.readLine()) != null) {
+                file = file.concat(sCurrentLine);
+            }
+            Log.e(LOG_TAG, "file read: "+file);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (br != null)br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        Type collectionType = new TypeToken<ArrayList<Bookmark>>(){}.getType();
+        return new Gson().fromJson(file, collectionType);
     }
 
     private void storeKeys(String key, String secret) {
