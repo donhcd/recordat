@@ -53,14 +53,12 @@ public class Recordat extends Activity {
     private Button playButton = null;
     private MediaPlayer player = null;
 
-    private String newFileName;
     private String fileName;
     private long startTime;
     private ListView addedBkmkListView;
 
     private ArrayAdapter recordBkmkAdapter;
     private Button addBookmarkButton;
-    private Button renameAudioButton;
     private ArrayList<Bookmark> currentBookmarks;
     private ListView playBkmkListView;
     private ArrayList<Bookmark> playingFileBookmarks;
@@ -152,29 +150,6 @@ public class Recordat extends Activity {
                 final Bookmark bookmark = (Bookmark) playAdapter.getItem(i);
                 // TODO is maybe the wrong time
                 player.seekTo((int) bookmark.getTime());
-            }
-        });
-
-        renameAudioButton = (Button)findViewById(R.id.renameaudio);
-        renameAudioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Recordat.this);
-                alertDialogBuilder.setTitle("Rename audio recording");
-                alertDialogBuilder.setMessage("Recording name");
-                final EditText input = new EditText(Recordat.this);
-                alertDialogBuilder.setView(input);
-                alertDialogBuilder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        newFileName = String.valueOf(input.getText());
-                    }
-                });
-                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Canceled.
-                    }
-                });
-                alertDialogBuilder.show();
             }
         });
     }
@@ -298,7 +273,6 @@ public class Recordat extends Activity {
 
     private void startRecording() {
         fileName = new Date().getTime() + "";
-        newFileName = null;
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -319,35 +293,52 @@ public class Recordat extends Activity {
 
     private void stopRecording() {
         recordButton.setText("Start recording");
-//        startRecording = true;
         recorder.stop();
         recorder.release();
         recorder = null;
         findViewById(R.id.recordingoptions).setVisibility(View.GONE);
         findViewById(R.id.addedbookmarklist).setVisibility(View.GONE);
-        if (newFileName != null) {
-            File from = new File(appDirectoryPath+fileName+".mp4");
-            File to = new File(appDirectoryPath+newFileName+".mp4");
-            from.renameTo(to);
-        } else {
-            newFileName = fileName;
-        }
 
-        String newFileInfoName = newFileName + "_bmks";
-        try {
-            FileWriter file = new FileWriter(appDirectoryPath+newFileInfoName+".json");
-            Toast.makeText(this, new Gson().toJson(currentBookmarks), Toast.LENGTH_LONG).show();
-            file.write(new Gson().toJson(currentBookmarks));
-            file.flush();
-            file.close();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Rename audio recording?");
+        alertDialogBuilder.setMessage("Recording name");
+        final EditText input = new EditText(Recordat.this);
+        alertDialogBuilder.setView(input);
+        alertDialogBuilder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String newFileName = String.valueOf(input.getText());
 
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        currentBookmarks = null;
+                if (newFileName.trim().length() > 0) {
+                    File from = new File(appDirectoryPath+fileName+".mp4");
+                    File to = new File(appDirectoryPath+ newFileName +".mp4");
+                    from.renameTo(to);
+                } else {
+                    newFileName = fileName;
+                }
 
-        new AddToDropboxTask().execute(newFileName.concat(".mp4"));
-        new AddToDropboxTask().execute(newFileInfoName.concat(".json"));
+                String newFileInfoName = newFileName + "_bmks";
+                try {
+                    FileWriter file = new FileWriter(appDirectoryPath+newFileInfoName+".json");
+                    Toast.makeText(Recordat.this, new Gson().toJson(currentBookmarks), Toast.LENGTH_LONG).show();
+                    file.write(new Gson().toJson(currentBookmarks));
+                    file.flush();
+                    file.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+                currentBookmarks = null;
+
+                new AddToDropboxTask().execute(newFileName.concat(".mp4"));
+                new AddToDropboxTask().execute(newFileInfoName.concat(".json"));
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+        alertDialogBuilder.show();
     }
 
     private String getBookmarksJSON(ArrayList<Bookmark> currentBookmarks) {
