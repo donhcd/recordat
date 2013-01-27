@@ -27,7 +27,6 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Recordat extends Activity {
     final static private String LOG_TAG = "RECORDAT_MAIN";
@@ -59,12 +58,13 @@ public class Recordat extends Activity {
     private long startTime;
     private ListView addedBkmkListView;
 
-    private ArrayAdapter adapter;
+    private ArrayAdapter recordBkmkAdapter;
     private Button addBookmarkButton;
     private Button renameAudioButton;
     private ArrayList<Bookmark> currentBookmarks;
     private ListView playBkmkListView;
     private ArrayList<Bookmark> playingFileBookmarks;
+    private ArrayAdapter playAdapter;
 
     /**
      * Called when the activity is first created.
@@ -102,8 +102,9 @@ public class Recordat extends Activity {
             private boolean startPlaying = true;
             public void onClick(View v) {
                 if (startPlaying) {
-                    onPlay(startPlaying);
+                    onPlay();
                 } else {
+                    stopPlaying();
                     playButton.setText("Start playing");
                 }
                 startPlaying = !startPlaying;
@@ -114,14 +115,14 @@ public class Recordat extends Activity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(Recordat.this, "poopoopoo", Toast.LENGTH_LONG).show();
-                adapter.add(new Bookmark(new Date().getTime() - startTime));
+                recordBkmkAdapter.add(new Bookmark(new Date().getTime() - startTime));
             }
         });
         addedBkmkListView = (ListView)findViewById(R.id.addedbookmarklist);
         addedBkmkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                final Bookmark bookmark = (Bookmark) adapter.getItem(i);
+                final Bookmark bookmark = (Bookmark) recordBkmkAdapter.getItem(i);
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Recordat.this);
                 alertDialogBuilder.setTitle("Rename bookmark");
@@ -130,9 +131,9 @@ public class Recordat extends Activity {
                 alertDialogBuilder.setView(input);
                 alertDialogBuilder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        adapter.remove(adapter.getItem(i));
+                        recordBkmkAdapter.remove(recordBkmkAdapter.getItem(i));
                         bookmark.setText(String.valueOf(input.getText()));
-                        adapter.insert(bookmark, i);
+                        recordBkmkAdapter.insert(bookmark, i);
                     }
                 });
                 alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -148,26 +149,9 @@ public class Recordat extends Activity {
         playBkmkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                final Bookmark bookmark = (Bookmark) adapter.getItem(i);
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Recordat.this);
-                alertDialogBuilder.setTitle("Rename bookmark");
-                alertDialogBuilder.setMessage("New name");
-                final EditText input = new EditText(Recordat.this);
-                alertDialogBuilder.setView(input);
-                alertDialogBuilder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        adapter.remove(adapter.getItem(i));
-                        bookmark.setText(String.valueOf(input.getText()));
-                        adapter.insert(bookmark, i);
-                    }
-                });
-                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Canceled.
-                    }
-                });
-                alertDialogBuilder.show();
+                final Bookmark bookmark = (Bookmark) playAdapter.getItem(i);
+                // TODO is maybe the wrong time
+                player.seekTo((int) bookmark.getTime());
             }
         });
 
@@ -232,10 +216,9 @@ public class Recordat extends Activity {
         if (start) {
             startRecording();
             currentBookmarks = new ArrayList<Bookmark>();
-            adapter = new ArrayAdapter(
+            recordBkmkAdapter = new ArrayAdapter(
                     this, android.R.layout.simple_list_item_1, currentBookmarks);
-            addedBkmkListView.setAdapter(adapter);
-            // TODO need place to rename file
+            addedBkmkListView.setAdapter(recordBkmkAdapter);
         } else {
             stopRecording();
         }
@@ -268,41 +251,32 @@ public class Recordat extends Activity {
         }
     }
 
-    private void onPlay(final boolean start) {
-        if (start) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Recordat.this);
-            FilenameFilter filter = new FilenameFilter() {
-                public boolean accept(File dir, String filename) {
-                    File sel = new File(dir, filename);
-                    return filename.contains(".mp4") || sel.isDirectory();
-                }
-            };
-            final String[] recordingList = new File(appDirectoryPath).list(filter);
-            final String[] theFile = {""};
-            builder.setTitle("Choose recording");
-            builder.setItems(recordingList, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    if (start) {
-                        theFile[0] = recordingList[which];
-                        startPlaying(appDirectoryPath + theFile[0]);
-                        playButton.setText("Stop playing");
-                    } else {
-                        findViewById(R.id.playbookmarklist).setVisibility(View.GONE);
-                        playButton.setText("Start playing");
-                    }
-                }
-            });
-            builder.show();
-        } else {
-            stopPlaying();
-        }
+    private void onPlay() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Recordat.this);
+        FilenameFilter filter = new FilenameFilter() {
+            public boolean accept(File dir, String filename) {
+                File sel = new File(dir, filename);
+                return filename.contains(".mp4") || sel.isDirectory();
+            }
+        };
+        final String[] recordingList = new File(appDirectoryPath).list(filter);
+        final String[] theFile = {""};
+        builder.setTitle("Choose recording");
+        builder.setItems(recordingList, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                theFile[0] = recordingList[which];
+                startPlaying(appDirectoryPath + theFile[0]);
+                playButton.setText("Stop playing");
+            }
+        });
+        builder.show();
     }
 
     private void startPlaying(String fileName) {
         String bkmksFile = fileName;
-        bkmksFile = bkmksFile.substring(0, bkmksFile.length()-4)+"_bmks.txt";
+        bkmksFile = bkmksFile.substring(0, bkmksFile.length()-4)+"_bmks.json";
         playingFileBookmarks = getBookmarksFromFile(bkmksFile);
-        ArrayAdapter playAdapter = new ArrayAdapter(
+        playAdapter = new ArrayAdapter(
                 this, android.R.layout.simple_list_item_1, playingFileBookmarks);
         playBkmkListView.setAdapter(playAdapter);
         playBkmkListView.setVisibility(View.VISIBLE);
@@ -319,6 +293,7 @@ public class Recordat extends Activity {
     private void stopPlaying() {
         player.release();
         player = null;
+        playBkmkListView.setVisibility(View.GONE);
     }
 
     private void startRecording() {
@@ -360,7 +335,7 @@ public class Recordat extends Activity {
 
         String newFileInfoName = newFileName + "_bmks";
         try {
-            FileWriter file = new FileWriter(appDirectoryPath+newFileInfoName+".txt");
+            FileWriter file = new FileWriter(appDirectoryPath+newFileInfoName+".json");
             Toast.makeText(this, new Gson().toJson(currentBookmarks), Toast.LENGTH_LONG).show();
             file.write(new Gson().toJson(currentBookmarks));
             file.flush();
@@ -372,7 +347,7 @@ public class Recordat extends Activity {
         currentBookmarks = null;
 
         new AddToDropboxTask().execute(newFileName.concat(".mp4"));
-        new AddToDropboxTask().execute(newFileInfoName.concat(".txt"));
+        new AddToDropboxTask().execute(newFileInfoName.concat(".json"));
     }
 
     private String getBookmarksJSON(ArrayList<Bookmark> currentBookmarks) {

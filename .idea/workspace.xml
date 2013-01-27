@@ -23,25 +23,22 @@
     </option>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="RECORDAT_" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="record" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="02c5c2fe-3585-40cc-9b02-035a409c971f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/google_gson_2_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Recordat.iml" afterPath="$PROJECT_DIR$/Recordat.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="02c5c2fe-3585-40cc-9b02-035a409c971f" name="Default" comment="" />
     <ignored path="Recordat.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.java" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359185771211" ignored="false" />
-    <file path="/Recordat.java" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359248892265" ignored="false" />
+    <file path="/Recordat.java" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359250111385" ignored="false" />
     <file path="/main.xml" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359239114812" ignored="false" />
     <file path="/AndroidManifest.xml" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359163766339" ignored="false" />
     <file path="/Dummy.txt" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359182313387" ignored="false" />
     <file path="/recordbutton.xml" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359182437115" ignored="false" />
     <file path="/FileBookmarks.java" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359190266910" ignored="false" />
     <file path="/Bookmark.java" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359231337670" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359250115398" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,35 +100,31 @@
       <file leaf-file-name="Recordat.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/recordat/Recordat/Recordat.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="305" column="28" selection-start="12710" selection-end="12710" vertical-scroll-proportion="0.43448275">
+            <state line="295" column="48" selection-start="11942" selection-end="11942" vertical-scroll-proportion="0.4643678">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2928#3341#0" expanded="true" />
-                <element signature="e#3330#3331#0" expanded="true" />
-                <element signature="e#3925#4207#0" expanded="true" />
-                <element signature="e#4196#4197#0" expanded="true" />
-                <element signature="e#4335#5655#0" expanded="true" />
-                <element signature="e#4971#5321#0" expanded="true" />
-                <element signature="e#5302#5303#0" expanded="true" />
-                <element signature="e#5387#5586#0" expanded="true" />
-                <element signature="e#5567#5568#0" expanded="true" />
-                <element signature="e#5644#5645#0" expanded="true" />
-                <element signature="e#5781#7101#0" expanded="true" />
-                <element signature="e#6417#6767#0" expanded="true" />
-                <element signature="e#6748#6749#0" expanded="true" />
-                <element signature="e#6833#7032#0" expanded="true" />
-                <element signature="e#7013#7014#0" expanded="true" />
-                <element signature="e#7090#7091#0" expanded="true" />
-                <element signature="e#7218#8296#0" expanded="true" />
-                <element signature="e#7729#7962#0" expanded="true" />
-                <element signature="e#7943#7944#0" expanded="true" />
-                <element signature="e#8028#8227#0" expanded="true" />
-                <element signature="e#8208#8209#0" expanded="true" />
-                <element signature="e#8285#8286#0" expanded="true" />
-                <element signature="e#11271#11523#0" expanded="true" />
-                <element signature="e#11508#11509#0" expanded="true" />
-                <element signature="e#11746#12309#0" expanded="true" />
-                <element signature="e#12294#12295#0" expanded="true" />
+                <element signature="e#2950#3363#0" expanded="true" />
+                <element signature="e#3352#3353#0" expanded="true" />
+                <element signature="e#3970#4262#0" expanded="true" />
+                <element signature="e#4251#4252#0" expanded="true" />
+                <element signature="e#4390#5750#0" expanded="true" />
+                <element signature="e#5036#5416#0" expanded="true" />
+                <element signature="e#5397#5398#0" expanded="true" />
+                <element signature="e#5482#5681#0" expanded="true" />
+                <element signature="e#5662#5663#0" expanded="true" />
+                <element signature="e#5739#5740#0" expanded="true" />
+                <element signature="e#5876#6241#0" expanded="true" />
+                <element signature="e#6230#6231#0" expanded="true" />
+                <element signature="e#6358#7436#0" expanded="true" />
+                <element signature="e#6869#7102#0" expanded="true" />
+                <element signature="e#7083#7084#0" expanded="true" />
+                <element signature="e#7168#7367#0" expanded="true" />
+                <element signature="e#7348#7349#0" expanded="true" />
+                <element signature="e#7425#7426#0" expanded="true" />
+                <element signature="e#10337#10569#0" expanded="true" />
+                <element signature="e#10558#10559#0" expanded="true" />
+                <element signature="e#10776#11072#0" expanded="true" />
+                <element signature="e#11061#11062#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -494,17 +487,17 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867134" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3391892" sideWeight="0.5795564" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3391892" sideWeight="0.59980714" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867134" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32567567" sideWeight="0.39151397" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31486487" sideWeight="0.76374155" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32567567" sideWeight="0.37126327" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31486487" sideWeight="0.7579557" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867134" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29831144" sideWeight="0.68378377" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3391892" sideWeight="0.41369334" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3391892" sideWeight="0.39344263" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -641,35 +634,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/recordat/Recordat/Recordat.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="305" column="28" selection-start="12710" selection-end="12710" vertical-scroll-proportion="0.43448275">
+        <state line="295" column="48" selection-start="11942" selection-end="11942" vertical-scroll-proportion="0.4643678">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2928#3341#0" expanded="true" />
-            <element signature="e#3330#3331#0" expanded="true" />
-            <element signature="e#3925#4207#0" expanded="true" />
-            <element signature="e#4196#4197#0" expanded="true" />
-            <element signature="e#4335#5655#0" expanded="true" />
-            <element signature="e#4971#5321#0" expanded="true" />
-            <element signature="e#5302#5303#0" expanded="true" />
-            <element signature="e#5387#5586#0" expanded="true" />
-            <element signature="e#5567#5568#0" expanded="true" />
-            <element signature="e#5644#5645#0" expanded="true" />
-            <element signature="e#5781#7101#0" expanded="true" />
-            <element signature="e#6417#6767#0" expanded="true" />
-            <element signature="e#6748#6749#0" expanded="true" />
-            <element signature="e#6833#7032#0" expanded="true" />
-            <element signature="e#7013#7014#0" expanded="true" />
-            <element signature="e#7090#7091#0" expanded="true" />
-            <element signature="e#7218#8296#0" expanded="true" />
-            <element signature="e#7729#7962#0" expanded="true" />
-            <element signature="e#7943#7944#0" expanded="true" />
-            <element signature="e#8028#8227#0" expanded="true" />
-            <element signature="e#8208#8209#0" expanded="true" />
-            <element signature="e#8285#8286#0" expanded="true" />
-            <element signature="e#11271#11523#0" expanded="true" />
-            <element signature="e#11508#11509#0" expanded="true" />
-            <element signature="e#11746#12309#0" expanded="true" />
-            <element signature="e#12294#12295#0" expanded="true" />
+            <element signature="e#2950#3363#0" expanded="true" />
+            <element signature="e#3352#3353#0" expanded="true" />
+            <element signature="e#3970#4262#0" expanded="true" />
+            <element signature="e#4251#4252#0" expanded="true" />
+            <element signature="e#4390#5750#0" expanded="true" />
+            <element signature="e#5036#5416#0" expanded="true" />
+            <element signature="e#5397#5398#0" expanded="true" />
+            <element signature="e#5482#5681#0" expanded="true" />
+            <element signature="e#5662#5663#0" expanded="true" />
+            <element signature="e#5739#5740#0" expanded="true" />
+            <element signature="e#5876#6241#0" expanded="true" />
+            <element signature="e#6230#6231#0" expanded="true" />
+            <element signature="e#6358#7436#0" expanded="true" />
+            <element signature="e#6869#7102#0" expanded="true" />
+            <element signature="e#7083#7084#0" expanded="true" />
+            <element signature="e#7168#7367#0" expanded="true" />
+            <element signature="e#7348#7349#0" expanded="true" />
+            <element signature="e#7425#7426#0" expanded="true" />
+            <element signature="e#10337#10569#0" expanded="true" />
+            <element signature="e#10558#10559#0" expanded="true" />
+            <element signature="e#10776#11072#0" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
           </folding>
         </state>
       </provider>
