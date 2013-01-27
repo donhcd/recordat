@@ -1,5 +1,6 @@
 package com.recordat.Recordat;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,6 +25,6 @@ public class Bookmark {
     }
 
     public String toString() {
-        return text != null ? text : ""+time;
+        return text != null ? text : new SimpleDateFormat("mm:ss").format(new Date(time));
     }
 }

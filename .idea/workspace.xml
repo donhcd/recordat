@@ -37,8 +37,8 @@
     <file path="/Dummy.txt" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359182313387" ignored="false" />
     <file path="/recordbutton.xml" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359182437115" ignored="false" />
     <file path="/FileBookmarks.java" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359190266910" ignored="false" />
-    <file path="/Bookmark.java" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359231337670" ignored="false" />
-    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359250115398" ignored="false" />
+    <file path="/Bookmark.java" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359250314590" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="02c5c2fe-3585-40cc-9b02-035a409c971f" time="1359250361565" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,10 +97,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Recordat.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Recordat.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/recordat/Recordat/Recordat.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="295" column="48" selection-start="11942" selection-end="11942" vertical-scroll-proportion="0.4643678">
+            <state line="292" column="48" selection-start="11844" selection-end="11844" vertical-scroll-proportion="-5.576923">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2950#3363#0" expanded="true" />
@@ -130,10 +130,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Bookmark.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Bookmark.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/recordat/Recordat/Bookmark.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="45" selection-start="469" selection-end="469" vertical-scroll-proportion="0.0">
+            <state line="24" column="64" selection-start="426" selection-end="426" vertical-scroll-proportion="0.527115">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -176,9 +176,9 @@
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/res/layout/recordbutton.xml" />
         <option value="$PROJECT_DIR$/src/com/recordat/Recordat/FileBookmarks.java" />
-        <option value="$PROJECT_DIR$/src/com/recordat/Recordat/Bookmark.java" />
         <option value="$PROJECT_DIR$/res/layout/main.xml" />
         <option value="$PROJECT_DIR$/src/com/recordat/Recordat/Recordat.java" />
+        <option value="$PROJECT_DIR$/src/com/recordat/Recordat/Bookmark.java" />
       </list>
     </option>
   </component>
@@ -487,17 +487,17 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867134" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3391892" sideWeight="0.59980714" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3391892" sideWeight="0.6027001" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867134" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32567567" sideWeight="0.37126327" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32567567" sideWeight="0.3683703" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31486487" sideWeight="0.7579557" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867134" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29831144" sideWeight="0.68378377" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3391892" sideWeight="0.39344263" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3391892" sideWeight="0.39054966" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -613,15 +613,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/recordat/Recordat/Bookmark.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="45" selection-start="469" selection-end="469" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -634,7 +625,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/recordat/Recordat/Recordat.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="295" column="48" selection-start="11942" selection-end="11942" vertical-scroll-proportion="0.4643678">
+        <state line="292" column="48" selection-start="11844" selection-end="11844" vertical-scroll-proportion="-5.576923">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2950#3363#0" expanded="true" />
@@ -659,6 +650,15 @@
             <element signature="e#10558#10559#0" expanded="true" />
             <element signature="e#10776#11072#0" expanded="true" />
             <element signature="e#11061#11062#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/recordat/Recordat/Bookmark.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="64" selection-start="426" selection-end="426" vertical-scroll-proportion="0.527115">
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
